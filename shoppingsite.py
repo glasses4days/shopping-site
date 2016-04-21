@@ -60,22 +60,27 @@ def show_melon(melon_id):
 @app.route("/cart")
 def shopping_cart():
     """Display content of shopping cart."""
-    melon = melon.common_name
+    
+    cart = {}
+
     quantity = 0
-    # common_name = melons.common_name
-    # price = melon.price
+    cart[id] = [melon_name, melon_price, quantity]
 
     for id in session['cart']:
-        if id in session['cart']:
+        melon_info = melons.get_by_id(id)
+        melon_name = melon_info.common_name
+        melon_price = melon_info.price
+        print melon_info, melon_name
+
+        if id in cart[id]:
             quantity += 1
         else:
-            #pull in melon info here
-            #melon.common_name
-            # melon.price 
             quantity = 1
-            print melon.get(common_name)
+            
+        print quantity, melon_name, melon_price
+        print session['cart']
 
-        #total = price * quantity     
+        # total = price * quantity     
 
     # TODO: Display the contents of the shopping cart.
 
@@ -89,7 +94,12 @@ def shopping_cart():
     # - hand to the template the total order cost and the list of melon types
 
 
-    return render_template("cart.html")
+    return render_template("cart.html",)
+                            # melon_name=melon_name, 
+                            # quantity=quantity,
+                            # melon_price=melon_price,
+                            # melon_total=melon_total,
+                            # order_total=order_total,)
 
 
 @app.route("/add_to_cart/<int:id>")
@@ -99,17 +109,6 @@ def add_to_cart(id):
     When a melon is added to the cart, redirect browser to the shopping cart
     page and display a confirmation message: 'Successfully added to cart'.
     """
-
-# On adding an item, check to see if the session contains a cart already.
-# If not, add a new cart (an empty list) to the session.
-# Append the melon id under consideration to our cart list.
-# Flash a message indicating the melon was successfully added to the cart.
-# Redirect the user to the shopping cart route.
-
-
-
-    #session =  {} already done by flask
-
 
     if session['cart']:
         session['cart'].append(id)
@@ -121,7 +120,7 @@ def add_to_cart(id):
 
 
     flash("Your melon is now in your melon cart.")
-    return redirect("/melons")
+    return redirect("/cart")
 
 
 @app.route("/login", methods=["GET"])
