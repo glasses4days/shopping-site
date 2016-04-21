@@ -60,15 +60,20 @@ def show_melon(melon_id):
 @app.route("/cart")
 def shopping_cart():
     """Display content of shopping cart."""
-
+    melon = melon.common_name
     quantity = 0
+    # common_name = melons.common_name
+    # price = melon.price
 
     for id in session['cart']:
         if id in session['cart']:
             quantity += 1
         else:
-            #pull in melon info here 
+            #pull in melon info here
+            #melon.common_name
+            # melon.price 
             quantity = 1
+            print melon.get(common_name)
 
         #total = price * quantity     
 
@@ -83,6 +88,7 @@ def shopping_cart():
     #   - keep track of the total amt of the entire order
     # - hand to the template the total order cost and the list of melon types
 
+
     return render_template("cart.html")
 
 
@@ -94,12 +100,25 @@ def add_to_cart(id):
     page and display a confirmation message: 'Successfully added to cart'.
     """
 
-    cart_melon = []
+# On adding an item, check to see if the session contains a cart already.
+# If not, add a new cart (an empty list) to the session.
+# Append the melon id under consideration to our cart list.
+# Flash a message indicating the melon was successfully added to the cart.
+# Redirect the user to the shopping cart route.
+
+
+
+    #session =  {} already done by flask
+
 
     if session['cart']:
-        session['cart'] = cart_melon.append(id)
+        session['cart'].append(id)
     else:
-        session['cart']
+        #accesses the session and gives the key cart and value of an empty list
+        session['cart'] = []
+        #appends id to value of cart
+        session['cart'].append(id)
+
 
     flash("Your melon is now in your melon cart.")
     return redirect("/melons")
